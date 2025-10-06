@@ -57,6 +57,8 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
 
+    implementation(libs.androidx.documentfile)
+
     implementation(platform(libs.koin.bom))
     implementation(libs.bundles.koin)
 
