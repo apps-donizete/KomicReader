@@ -1,11 +1,12 @@
 package com.dv.apps.komic.reader.feature.folder
 
-import android.content.Context
 import android.net.Uri
-import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.dv.apps.komic.reader.domain.folder.FolderManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class State(
     val isLoading: Boolean = false,
@@ -17,7 +18,7 @@ sealed interface Intent {
 }
 
 class FolderManagementViewModel(
-    private val context: Context
+    private val folderManager: FolderManager
 ) : ViewModel() {
     val state = MutableStateFlow(State())
 
@@ -32,12 +33,10 @@ class FolderManagementViewModel(
             state.update { it.copy(noSelection = true) }
             return
         }
-        context.contentResolver.takePersistableUriPermission(
-            uri,
-            android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
-        )
-        val tree = DocumentFile.fromTreeUri(context, uri)
-        val files = tree?.listFiles()
-        println(files)
+        viewModelScope.launch {
+            folderManager.saveFolder(uri.toString())
+        }
+        //val tree = DocumentFile.fromTreeUri(context, uri)
+        //val files = tree?.listFiles()
     }
 }
