@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Komic Reader</string>
+    <string name="app_name" translatable="false">Komic Reader</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_shelf">Shelf</string>
+    <string name="menu_confi">Configuration</string>
 </resources>

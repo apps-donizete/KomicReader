@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_home">Início</string>
+    <string name="menu_shelf">Prateleira</string>
+    <string name="menu_confi">Configuração</string>
+</resources>
