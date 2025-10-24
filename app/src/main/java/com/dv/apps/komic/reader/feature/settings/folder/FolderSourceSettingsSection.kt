@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dv.apps.komic.reader.R
-import com.dv.apps.komic.reader.domain.folder.Folder
+import com.dv.apps.komic.reader.domain.file.File
 import com.dv.apps.komic.reader.ext.dispatchFor
 import com.dv.apps.komic.reader.feature.settings.SettingsSection
 import com.dv.apps.komic.reader.ui.theme.KomicReaderTheme
@@ -63,10 +63,11 @@ fun FolderSourceSettingsSection(
         )
 
         for (folder in state.selectedFolders) {
-            Text(folder
-                .path
-                .split("%3A")
-                .last()
+            Text(
+                folder
+                    .path
+                    .split(":")
+                    .last()
             )
         }
     }
@@ -80,7 +81,10 @@ private fun FolderScreenPreview() {
             FolderSourceSettingsSection(
                 state = State(
                     selectedFolders = List(4) {
-                        Folder(it, "folder/$it")
+                        File(
+                            "/root/sdcard:folder/$it",
+                            "folder/$it"
+                        )
                     }
                 )
             )

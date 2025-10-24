@@ -3,8 +3,8 @@ package com.dv.apps.komic.reader.feature.settings.folder
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dv.apps.komic.reader.domain.folder.Folder
-import com.dv.apps.komic.reader.domain.folder.FolderManager
+import com.dv.apps.komic.reader.domain.file.File
+import com.dv.apps.komic.reader.domain.file.FileManager
 import com.dv.apps.komic.reader.ext.collectInto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -13,27 +13,27 @@ import kotlinx.coroutines.launch
 data class State(
     val isLoading: Boolean = false,
     val noSelection: Boolean = false,
-    val selectedFolders: List<Folder> = emptyList()
+    val selectedFolders: List<File> = emptyList()
 ) {
     fun copyWithSelectedFolders(
-        selectedFolders: List<Folder>
+        selectedFolders: List<File>
     ) = copy(selectedFolders = selectedFolders)
 }
 
 sealed interface Intent {
-    data class OnFileTreeSelected(val uri: Uri?): Intent
+    data class OnFileTreeSelected(val uri: Uri?) : Intent
 }
 
 class FolderSourceSettingsSectionViewModel(
-    private val folderManager: FolderManager
+    private val fileManager: FileManager
 ) : ViewModel() {
     val state = MutableStateFlow(State())
 
     init {
         viewModelScope.launch {
             launch {
-                folderManager
-                    .getFolders()
+                fileManager
+                    .getFiles()
                     .collectInto(state, State::copyWithSelectedFolders)
             }
         }
@@ -51,9 +51,7 @@ class FolderSourceSettingsSectionViewModel(
             return
         }
         viewModelScope.launch {
-            folderManager.saveFolder(uri.toString())
+            fileManager.saveFile(uri.toString())
         }
-        //val tree = DocumentFile.fromTreeUri(context, uri)
-        //val files = tree?.listFiles()
     }
 }
