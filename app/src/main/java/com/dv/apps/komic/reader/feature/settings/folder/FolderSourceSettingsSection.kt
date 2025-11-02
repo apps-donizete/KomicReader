@@ -56,19 +56,22 @@ fun FolderSourceSettingsSection(
             }
         }
 
-        HorizontalDivider(
-            Modifier
-                .padding(horizontal = 8.dp)
-                .padding(bottom = 8.dp)
-        )
-
-        for (folder in state.selectedFolders) {
-            Text(
-                folder
-                    .path
-                    .split(":")
-                    .last()
+        if (state.selectedFolders.isNotEmpty()) {
+            HorizontalDivider(
+                Modifier
+                    .padding(horizontal = 8.dp)
             )
+        }
+
+        Column(Modifier.padding(vertical = 8.dp)) {
+            for (folder in state.selectedFolders) {
+                Text(
+                    folder
+                        .path
+                        .split(":")
+                        .last()
+                )
+            }
         }
     }
 }
