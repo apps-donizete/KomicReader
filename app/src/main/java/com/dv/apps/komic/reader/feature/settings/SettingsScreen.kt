@@ -52,9 +52,6 @@ fun SettingsSection(
         Modifier
             .padding(8.dp)
             .fillMaxWidth(),
-        colors = CardDefaults.cardColors().copy(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        )
     ) {
         Box(Modifier.padding(horizontal = 16.dp)) {
             body()

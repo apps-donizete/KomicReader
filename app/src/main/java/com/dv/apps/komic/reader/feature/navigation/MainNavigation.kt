@@ -51,7 +51,6 @@ fun MainNavigation() {
                 )
             }
         },
-        containerColor = MaterialTheme.colorScheme.secondaryContainer
     ) {
         if (LocalInspectionMode.current) {
             Text(
