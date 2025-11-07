@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,7 +7,9 @@ plugins {
 
 android {
     namespace = "com.dv.apps.komic.reader"
-    compileSdk = 36
+    compileSdk {
+        version = release(36)
+    }
 
     defaultConfig {
         applicationId = "com.dv.apps.komic.reader"
@@ -36,7 +36,7 @@ android {
     }
     kotlin {
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_11
+            jvmTarget =  org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
             freeCompilerArgs.add("-Xlambdas=class")
         }
     }
