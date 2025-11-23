@@ -6,4 +6,6 @@
     <string name="menu_settings">Configuration</string>
     
     <string name="folder_source_settings_section_title">Selected folders</string>
+
+    <string name="shelf_screen_title">Your books</string>
 </resources>

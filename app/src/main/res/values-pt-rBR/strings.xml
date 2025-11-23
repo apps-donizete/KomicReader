@@ -5,4 +5,6 @@
     <string name="menu_settings">Configuração</string>
 
     <string name="folder_source_settings_section_title">Pastas selecionadas</string>
+
+    <string name="shelf_screen_title">Seus livros</string>
 </resources>
