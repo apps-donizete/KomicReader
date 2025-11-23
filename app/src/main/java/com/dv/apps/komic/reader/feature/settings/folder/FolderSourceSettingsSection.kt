@@ -13,21 +13,36 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dv.apps.komic.reader.R
 import com.dv.apps.komic.reader.domain.file.File
 import com.dv.apps.komic.reader.ext.dispatchFor
 import com.dv.apps.komic.reader.feature.settings.SettingsSection
 import com.dv.apps.komic.reader.ui.theme.KomicReaderTheme
+import org.koin.androidx.compose.koinViewModel
+
+@Composable
+fun FolderSourceSettingsSection() {
+    if (LocalInspectionMode.current) {
+        FolderSourceSettingsSection(State())
+    } else {
+        val vm = koinViewModel<FolderSourceSettingsSectionViewModel>()
+        val state by vm.state.collectAsStateWithLifecycle()
+        FolderSourceSettingsSection(state, vm::handleIntent)
+    }
+}
 
 @Composable
 fun FolderSourceSettingsSection(
-    state: State = State(),
+    state: State,
     dispatchIntent: (Intent) -> Unit = {}
 ) {
     val openDocumentTreeLauncher = rememberLauncherForActivityResult(
