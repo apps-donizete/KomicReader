@@ -78,12 +78,7 @@ fun FolderSourceSettingsSection(
 
             Column(Modifier.padding(vertical = 8.dp)) {
                 for (folder in state.selectedFolders) {
-                    Text(
-                        folder
-                            .name
-                            .split(":")
-                            .last()
-                    )
+                    Text(folder.name)
                 }
             }
         }

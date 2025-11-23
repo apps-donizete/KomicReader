@@ -35,6 +35,6 @@ private val DECODER: (String) -> String = {
 private fun DocumentFile.toEntity() = run {
     DocumentTree(
         path = "$uri",
-        name = "$uri".run(DECODER)
+        name = "$uri".run(DECODER).split(":").last()
     )
 }
