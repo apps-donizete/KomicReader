@@ -34,7 +34,7 @@ private val DECODER: (String) -> String = {
 
 private fun DocumentFile.toEntity() = run {
     DocumentTree(
-        path = uri.toString().run(DECODER),
-        name = name.orEmpty()
+        path = "$uri",
+        name = "$uri".run(DECODER)
     )
 }

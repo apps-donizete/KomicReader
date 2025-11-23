@@ -80,7 +80,7 @@ fun FolderSourceSettingsSection(
                 for (folder in state.selectedFolders) {
                     Text(
                         folder
-                            .path
+                            .name
                             .split(":")
                             .last()
                     )
