@@ -5,12 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.dv.apps.komic.reader.domain.file.DocumentTreeManager
 import com.dv.apps.komic.reader.domain.model.FileTree
 import com.dv.apps.komic.reader.domain.usecase.GetFileTreeUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import com.dv.apps.komic.reader.ext.mapItems
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 data class State(
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val fileTrees: List<FileTree> = emptyList()
 )
 
@@ -20,19 +21,15 @@ class ShelfScreenViewModel(
     private val documentTreeManager: DocumentTreeManager,
     private val getFileTreeUseCase: GetFileTreeUseCase
 ) : ViewModel() {
-    val state = MutableStateFlow(State())
-
-    init {
-        viewModelScope.launch {
-            documentTreeManager.getDocumentTrees().collect { documentTrees ->
-                state.update {
-                    it.copy(fileTrees = documentTrees.map { documentTree ->
-                        getFileTreeUseCase(documentTree.path)
-                    })
-                }
-            }
-        }
-    }
+    val state = documentTreeManager.getDocumentTrees().mapItems {
+        getFileTreeUseCase(it.path)
+    }.map {
+        State(isLoading = false, fileTrees = it)
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        State()
+    )
 
     fun handleIntent(intent: Intent) {
 
