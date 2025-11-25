@@ -1,5 +1,6 @@
-package com.dv.apps.komic.reader.domain.repository.filesystem
+package com.dv.apps.komic.reader.domain.repository
 
+import com.dv.apps.komic.reader.domain.model.VirtualFile
 import java.io.InputStream
 
 interface VirtualFilesystem {

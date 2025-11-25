@@ -2,8 +2,8 @@ package com.dv.apps.komic.reader.data.repository
 
 import android.content.Context
 import com.dv.apps.komic.reader.domain.repository.ThumbnailManager
-import com.dv.apps.komic.reader.domain.repository.filesystem.VirtualFile
-import com.dv.apps.komic.reader.domain.repository.filesystem.VirtualFilesystem
+import com.dv.apps.komic.reader.domain.model.VirtualFile
+import com.dv.apps.komic.reader.domain.repository.VirtualFilesystem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File

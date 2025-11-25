@@ -1,8 +1,10 @@
 syntax = "proto3";
 
-option java_package = "com.dv.apps.komic.reader.proto";
+option java_package = "com.dv.apps.komic.reader.data.protobuf";
 option java_multiple_files = true;
 
 message Settings {
   repeated string selected_folders = 1;
+  uint32 vertical_preview_column_size = 2;
+  uint32 horizontal_preview_column_size = 3;
 }

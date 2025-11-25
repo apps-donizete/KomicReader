@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.dv.apps.komic.reader.domain.repository.SettingsManager
 import com.dv.apps.komic.reader.ext.collectInto
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -32,7 +33,7 @@ class FolderSourceSettingsSectionViewModel(
         viewModelScope.launch {
             launch {
                 settingsManager
-                    .getSelectedFolders()
+                    .getSettings().map { it.selectedFolders }
                     .collectInto(state, State::copyWithSelectedFolders)
             }
         }

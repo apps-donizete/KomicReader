@@ -3,8 +3,8 @@ package com.dv.apps.komic.reader.data.repository
 import android.content.Context
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
-import com.dv.apps.komic.reader.domain.repository.filesystem.VirtualFile
-import com.dv.apps.komic.reader.domain.repository.filesystem.VirtualFilesystem
+import com.dv.apps.komic.reader.domain.model.VirtualFile
+import com.dv.apps.komic.reader.domain.repository.VirtualFilesystem
 import java.io.InputStream
 
 class VirtualFilesystemImpl(
@@ -14,7 +14,10 @@ class VirtualFilesystemImpl(
         path: String
     ): VirtualFile {
         val uri = path.toUri()
-        val documentFile = DocumentFile.fromTreeUri(context, uri) ?: return VirtualFile.Empty
+        val documentFile = DocumentFile.fromTreeUri(
+            context,
+            uri
+        ) ?: return VirtualFile.Folder("Error", path, emptyList())
         return buildFileTree(documentFile)
     }
 

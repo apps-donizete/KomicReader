@@ -1,5 +1,6 @@
 package com.dv.apps.komic.reader.feature.shelf
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
@@ -13,14 +14,17 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.window.core.layout.WindowSizeClass
 import com.dv.apps.komic.reader.R
 import com.dv.apps.komic.reader.domain.model.KomicPreviewTree
 import com.dv.apps.komic.reader.feature.common.KomicPreview
@@ -38,22 +42,38 @@ fun ShelfScreen() {
     }
 }
 
-//TODO(fetch it dynamically from user's settings)
-const val SPAN = 4
-
 @Composable
 fun ShelfScreen(
     state: State,
     dispatchIntent: (Intent) -> Unit = {}
 ) {
+    val configuration = LocalConfiguration.current
+    val isVertical = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+
+    val spanSize = if (isVertical) {
+        state.verticalPreviewColumnSize
+    } else {
+        state.horizontalPreviewColumnSize
+    }.takeIf { it > 0 } ?: run {
+        val windowInfo = currentWindowAdaptiveInfo(supportLargeAndXLargeWidth = true)
+        val windowSizeClass = windowInfo.windowSizeClass
+        val horizontallyLarge = windowSizeClass.isWidthAtLeastBreakpoint(
+            WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND
+        )
+        if (horizontallyLarge) {
+            4
+        } else {
+            2
+        }
+    }
+
     LazyVerticalGrid(
-        GridCells.Fixed(SPAN),
-        Modifier.padding(8.dp)
+        GridCells.Fixed(spanSize)
     ) {
         item { Spacer(Modifier.windowInsetsPadding(WindowInsets.statusBars)) }
 
         item(
-            span = { GridItemSpan(SPAN) }
+            span = { GridItemSpan(spanSize) }
         ) {
             Text(
                 stringResource(R.string.shelf_screen_title),
@@ -62,14 +82,15 @@ fun ShelfScreen(
         }
 
         for (item in state.komicPreviewTrees) {
-            ShelfFileTreePreview(item)
+            ShelfPreviewTree(spanSize, item)
         }
 
         item { Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars)) }
     }
 }
 
-fun LazyGridScope.ShelfFileTreePreview(
+fun LazyGridScope.ShelfPreviewTree(
+    spanSize: Int,
     komicPreviewTree: KomicPreviewTree
 ) {
     when (komicPreviewTree) {
@@ -87,12 +108,12 @@ fun LazyGridScope.ShelfFileTreePreview(
 
         is KomicPreviewTree.Nested -> {
             item(
-                span = { GridItemSpan(SPAN) }
+                span = { GridItemSpan(spanSize) }
             ) {
                 Spacer(Modifier.height(32.dp))
             }
             item(
-                span = { GridItemSpan(SPAN) }
+                span = { GridItemSpan(spanSize) }
             ) {
                 Text(
                     komicPreviewTree.title,
@@ -100,7 +121,7 @@ fun LazyGridScope.ShelfFileTreePreview(
                 )
             }
             for (child in komicPreviewTree.children) {
-                ShelfFileTreePreview(child)
+                ShelfPreviewTree(spanSize, child)
             }
         }
     }

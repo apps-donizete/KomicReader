@@ -2,7 +2,7 @@ package com.dv.apps.komic.reader.domain.usecase
 
 import com.dv.apps.komic.reader.domain.model.KomicPreviewTree
 import com.dv.apps.komic.reader.domain.repository.ThumbnailManager
-import com.dv.apps.komic.reader.domain.repository.filesystem.VirtualFile
+import com.dv.apps.komic.reader.domain.model.VirtualFile
 
 class GetKomicPreviewTree(
     private val thumbnailManager: ThumbnailManager
@@ -10,7 +10,6 @@ class GetKomicPreviewTree(
     override suspend fun invoke(
         virtualFile: VirtualFile
     ) = when (virtualFile) {
-        VirtualFile.Empty -> KomicPreviewTree.Empty
         is VirtualFile.File -> getPreviewTree(virtualFile)
         is VirtualFile.Folder -> getPreviewTree(virtualFile)
     }

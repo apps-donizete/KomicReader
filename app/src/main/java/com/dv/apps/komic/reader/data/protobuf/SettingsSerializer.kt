@@ -2,15 +2,13 @@ package com.dv.apps.komic.reader.data.protobuf
 
 import android.content.Context
 import androidx.datastore.core.CorruptionException
-import androidx.datastore.core.DataStore
 import androidx.datastore.core.Serializer
 import androidx.datastore.dataStore
-import com.dv.apps.komic.reader.proto.Settings
 import com.google.protobuf.InvalidProtocolBufferException
 import java.io.InputStream
 import java.io.OutputStream
 
-internal val Context.settingsDatastore: DataStore<Settings> by dataStore(
+internal val Context.settingsDatastore by dataStore(
     fileName = "settings.pb",
     serializer = SettingsSerializer,
 )

@@ -3,10 +3,10 @@ package com.dv.apps.komic.reader.data.repository
 import android.content.Context
 import android.content.Intent
 import androidx.core.net.toUri
+import com.dv.apps.komic.reader.data.protobuf.copy
 import com.dv.apps.komic.reader.data.protobuf.settingsDatastore
+import com.dv.apps.komic.reader.domain.model.Settings
 import com.dv.apps.komic.reader.domain.repository.SettingsManager
-import com.dv.apps.komic.reader.proto.Settings
-import com.dv.apps.komic.reader.proto.copy
 import kotlinx.coroutines.flow.map
 
 class SettingsManagerImpl(
@@ -23,8 +23,23 @@ class SettingsManagerImpl(
         }
     }
 
-    override fun getSelectedFolders() = context
-        .settingsDatastore
-        .data
-        .map(Settings::getSelectedFoldersList)
+    override suspend fun setHorizontalPreviewColumnSize(size: Int) {
+        context.settingsDatastore.updateData {
+            it.copy { horizontalPreviewColumnSize = size }
+        }
+    }
+
+    override suspend fun setVerticalPreviewColumnSize(size: Int) {
+        context.settingsDatastore.updateData {
+            it.copy { verticalPreviewColumnSize = size }
+        }
+    }
+
+    override fun getSettings() = context.settingsDatastore.data.map {
+        Settings(
+            it.selectedFoldersList,
+            it.horizontalPreviewColumnSize,
+            it.verticalPreviewColumnSize
+        )
+    }
 }

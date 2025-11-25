@@ -5,7 +5,7 @@ import com.dv.apps.komic.reader.data.repository.ThumbnailManagerImpl
 import com.dv.apps.komic.reader.data.repository.VirtualFilesystemImpl
 import com.dv.apps.komic.reader.domain.repository.SettingsManager
 import com.dv.apps.komic.reader.domain.repository.ThumbnailManager
-import com.dv.apps.komic.reader.domain.repository.filesystem.VirtualFilesystem
+import com.dv.apps.komic.reader.domain.repository.VirtualFilesystem
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
