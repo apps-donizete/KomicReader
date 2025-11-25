@@ -35,11 +35,18 @@ class SettingsManagerImpl(
         }
     }
 
+    override suspend fun setQuality(quality: Settings.Quality) {
+        context.settingsDatastore.updateData {
+            it.copy { previewQualityValue = quality.ordinal }
+        }
+    }
+
     override fun getSettings() = context.settingsDatastore.data.map {
         Settings(
             it.selectedFoldersList,
             it.verticalPreviewSpanSize,
             it.horizontalPreviewSpanSize,
+            Settings.Quality.entries[it.previewQuality.ordinal]
         )
     }
 }

@@ -9,6 +9,7 @@
     <string name="settings_section_preview_options_title">Preview options</string>
     <string name="settings_section_preview_options_vertical_span">Vertical preview span size</string>
     <string name="settings_section_preview_options_horizontal_span">Horizontal preview span size</string>
+    <string name="settings_section_preview_quality">Quality</string>
 
     <string name="shelf_screen_title">Your books</string>
 </resources>

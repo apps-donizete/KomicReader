@@ -27,7 +27,7 @@ fun KomicPreview(
 ) {
     OutlinedCard(modifier) {
         AsyncImage(
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+            modifier = Modifier.fillMaxWidth(),
             model = preview,
             contentDescription = "",
             contentScale = ContentScale.FillWidth

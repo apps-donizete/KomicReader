@@ -7,6 +7,7 @@ interface SettingsManager {
     suspend fun addSelectedFolder(path: String)
     suspend fun setVerticalPreviewSpanSize(size: Int)
     suspend fun setHorizontalPreviewSpanSize(size: Int)
+    suspend fun setQuality(quality: Settings.Quality)
 
     fun getSettings(): Flow<Settings>
 }
