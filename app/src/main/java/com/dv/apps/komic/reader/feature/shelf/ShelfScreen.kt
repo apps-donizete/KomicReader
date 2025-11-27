@@ -1,6 +1,7 @@
 package com.dv.apps.komic.reader.feature.shelf
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
@@ -21,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowSizeClass
@@ -85,7 +86,10 @@ fun ShelfScreen(
     val span = GridItemSpan(columns)
 
     LazyVerticalGrid(
-        GridCells.Fixed(columns)
+        GridCells.Fixed(columns),
+        modifier = Modifier.padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item { Spacer(Modifier.windowInsetsPadding(WindowInsets.statusBars)) }
 
@@ -111,27 +115,26 @@ fun LazyGridScope.ShelfPreviewTree(
     when (virtualFile) {
         is VirtualFile.File.WithThumbnail -> item {
             Thumbnail(
-                modifier = Modifier.padding(8.dp),
                 file = virtualFile
             )
         }
 
         is VirtualFile.File -> item {
             Thumbnail(
-                modifier = Modifier.padding(8.dp),
                 file = virtualFile
             )
         }
 
         is VirtualFile.Folder -> {
             item(span = { span }) {
-                Spacer(Modifier.height(32.dp))
+                Spacer(Modifier.height(16.dp))
             }
 
             item(span = { span }) {
                 Text(
-                    virtualFile.name,
-                    style = MaterialTheme.typography.titleMedium
+                    text = virtualFile.name.uppercase(),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
 
@@ -142,7 +145,7 @@ fun LazyGridScope.ShelfPreviewTree(
     }
 }
 
-@PreviewScreenSizes
+@Preview(showSystemUi = true)
 @Composable
 private fun ShelfScreenPreview() {
     KomicReaderTheme {
