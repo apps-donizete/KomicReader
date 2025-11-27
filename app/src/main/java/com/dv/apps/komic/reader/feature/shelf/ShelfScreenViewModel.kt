@@ -11,6 +11,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -28,17 +29,11 @@ class ShelfScreenViewModel(
     private val virtualFilesystem: VirtualFileSystem
 ) : ViewModel() {
     val state = settingsManager
-        .getSettings().map { settings ->
-            val trees = coroutineScope {
-                settings.selectedFolders.map {
-                    async {
-                        virtualFilesystem.find(
-                            it,
-                            settings.quality
-                        )
-                    }
-                }
-            }.awaitAll()
+        .getSettings()
+        .map { settings ->
+            val trees = settings.selectedFolders.mapNotNull {
+                virtualFilesystem.buildTree(it, settings.quality)
+            }
             State(trees, settings)
         }
         .flowOn(Dispatchers.Default)

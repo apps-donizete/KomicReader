@@ -8,6 +8,13 @@ import java.io.InputStream
 class PlatformFileManagerImpl(
     private val context: Context
 ) : PlatformFileManager {
+    override fun get(
+        descriptor: String
+    ) = DocumentFile.fromTreeUri(
+        context,
+        descriptor.toUri()
+    )?.run(DocumentFile::toDomain)
+
     override fun listFiles(
         file: PlatformFile
     ) = DocumentFile.fromTreeUri(
@@ -15,17 +22,7 @@ class PlatformFileManagerImpl(
         file.descriptor.toUri()
     )
         ?.listFiles()
-        ?.map {
-            PlatformFile(
-                "${it.uri}",
-                if (it.isDirectory) {
-                    PlatformFile.Type.FOLDER
-                } else {
-                    PlatformFile.Type.FILE
-                },
-                it.name.orEmpty()
-            )
-        } ?: emptyList()
+        ?.map(DocumentFile::toDomain) ?: emptyList()
 
     override fun open(
         file: PlatformFile
@@ -34,3 +31,14 @@ class PlatformFileManagerImpl(
         return context.contentResolver.openInputStream(uri)
     }
 }
+
+private fun DocumentFile.toDomain() = PlatformFile(
+    "$uri",
+    if (isDirectory) {
+        PlatformFile.Type.FOLDER
+    } else {
+        PlatformFile.Type.FILE
+    },
+    name.orEmpty(),
+    type.orEmpty()
+)

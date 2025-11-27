@@ -28,10 +28,7 @@ object GenerateThumbnail {
     ) = withContext(Dispatchers.IO) {
         val tmpFile = File.createTempFile("tmp_thumbnail", "")
 
-        virtualFilesystem.open(file).run(::ZipInputStream).use { zip ->
-            if (zip.nextEntry == null) return@withContext null
-            tmpFile.outputStream().use(zip::copyTo)
-        }
+
 
         val factor = getFactorForQuality(quality)
         val decode = BitmapFactory.decodeFile(tmpFile.absolutePath)

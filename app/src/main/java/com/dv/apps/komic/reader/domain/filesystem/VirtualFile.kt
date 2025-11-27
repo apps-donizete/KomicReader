@@ -1,13 +1,11 @@
 package com.dv.apps.komic.reader.domain.filesystem
 
-import com.dv.apps.komic.reader.domain.model.Settings
-
 sealed interface VirtualFile {
     val name: String
     val path: String
 
     data class Folder(
-        override val name: String,
+        override val name: String = "",
         override val path: String = "",
         val children: List<VirtualFile> = emptyList()
     ) : VirtualFile
