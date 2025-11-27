@@ -26,15 +26,23 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowSizeClass
 import com.dv.apps.komic.reader.R
-import com.dv.apps.komic.reader.domain.model.PreviewTree
-import com.dv.apps.komic.reader.feature.common.KomicPreview
+import com.dv.apps.komic.reader.domain.filesystem.VirtualFile
+import com.dv.apps.komic.reader.domain.model.Settings
 import com.dv.apps.komic.reader.ui.theme.KomicReaderTheme
+import com.dv.apps.komic.reader.ui.thumbnail.Thumbnail
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ShelfScreen() {
     if (LocalInspectionMode.current) {
-        ShelfScreen(State())
+        ShelfScreen(
+            State(
+                settings = Settings(
+                    verticalPreviewSpanSize = 3,
+                    horizontalPreviewSpanSize = 3
+                )
+            )
+        )
     } else {
         val vm = koinViewModel<ShelfScreenViewModel>()
         val state by vm.state.collectAsStateWithLifecycle()
@@ -48,9 +56,9 @@ fun getSettingsSpan(state: State): Int? {
     val isVertical = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
     return if (isVertical) {
-        state.verticalPreviewSpanSize
+        state.settings.verticalPreviewSpanSize
     } else {
-        state.horizontalPreviewSpanSize
+        state.settings.horizontalPreviewSpanSize
     }.takeIf { it > 0 }
 }
 
@@ -88,7 +96,7 @@ fun ShelfScreen(
             )
         }
 
-        for (item in state.previewTrees) {
+        for (item in state.trees) {
             ShelfPreviewTree(span, item)
         }
 
@@ -98,30 +106,36 @@ fun ShelfScreen(
 
 fun LazyGridScope.ShelfPreviewTree(
     span: GridItemSpan,
-    previewTree: PreviewTree
+    virtualFile: VirtualFile
 ) {
-    when (previewTree) {
-        is PreviewTree.Done -> item {
-            KomicPreview(
+    when (virtualFile) {
+        is VirtualFile.File.WithThumbnail -> item {
+            Thumbnail(
                 modifier = Modifier.padding(8.dp),
-                title = previewTree.title,
-                preview = previewTree.preview
+                file = virtualFile
             )
         }
 
-        is PreviewTree.More -> {
+        is VirtualFile.File -> item {
+            Thumbnail(
+                modifier = Modifier.padding(8.dp),
+                file = virtualFile
+            )
+        }
+
+        is VirtualFile.Folder -> {
             item(span = { span }) {
                 Spacer(Modifier.height(32.dp))
             }
 
             item(span = { span }) {
                 Text(
-                    previewTree.title,
+                    virtualFile.name,
                     style = MaterialTheme.typography.titleMedium
                 )
             }
 
-            for (child in previewTree.children) {
+            for (child in virtualFile.children) {
                 ShelfPreviewTree(span, child)
             }
         }
@@ -134,44 +148,54 @@ private fun ShelfScreenPreview() {
     KomicReaderTheme {
         ShelfScreen(
             State(
-                previewTrees = listOf(
-                    PreviewTree.More(
+                trees = listOf(
+                    VirtualFile.Folder(
                         "POKEMON",
+                        "",
                         listOf(
-                            PreviewTree.Done(
+                            VirtualFile.File(
                                 "A"
                             ),
-                            PreviewTree.Done(
+                            VirtualFile.File(
                                 "B"
-                            )
+                            ),
+                            VirtualFile.File(
+                                "C"
+                            ),
                         )
                     ),
-                    PreviewTree.More(
+                    VirtualFile.Folder(
                         "DIGIMON",
+                        "",
                         listOf(
-                            PreviewTree.Done(
+                            VirtualFile.File(
                                 "A"
                             ),
-                            PreviewTree.Done(
+                            VirtualFile.File(
                                 "B"
-                            )
+                            ),
                         )
                     ),
-                    PreviewTree.More(
+                    VirtualFile.Folder(
                         "CROSSOVER",
+                        "",
                         listOf(
-                            PreviewTree.Done(
+                            VirtualFile.File(
                                 "A"
                             ),
-                            PreviewTree.More(
-                                "DIGIMON",
+                            VirtualFile.File(
+                                "B",
+                            ),
+                            VirtualFile.Folder(
+                                "CHAVEZ",
+                                "",
                                 listOf(
-                                    PreviewTree.Done(
+                                    VirtualFile.File(
                                         "A"
                                     ),
-                                    PreviewTree.Done(
+                                    VirtualFile.File(
                                         "B"
-                                    )
+                                    ),
                                 )
                             )
                         )

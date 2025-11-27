@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dv.apps.komic.reader.domain.model.Settings
 import com.dv.apps.komic.reader.domain.repository.SettingsManager
-import com.dv.apps.komic.reader.domain.repository.ThumbnailManager
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -23,8 +22,7 @@ sealed interface Intent {
 }
 
 class PreviewSettingsSectionViewModel(
-    private val settingsManager: SettingsManager,
-    private val thumbnailManager: ThumbnailManager
+    private val settingsManager: SettingsManager
 ) : ViewModel() {
     val state = settingsManager
         .getSettings()
@@ -52,7 +50,7 @@ class PreviewSettingsSectionViewModel(
             }
 
             is Intent.OnQualityChanged -> {
-                thumbnailManager.removeAllCache()
+
                 settingsManager.setQuality(intent.quality)
             }
         }

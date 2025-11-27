@@ -1,12 +1,9 @@
 package com.dv.apps.komic.reader.domain.repository
 
-import com.dv.apps.komic.reader.domain.model.VirtualFile
-import java.io.File
+import com.dv.apps.komic.reader.domain.filesystem.VirtualFile
 
 interface ThumbnailManager {
-    suspend fun removeAllCache()
+    suspend fun add(file: VirtualFile.File, thumbnail: VirtualFile.Thumbnail)
 
-    suspend fun getOrCache(virtualFile: VirtualFile.File): File?
-
-    suspend fun getOrCache(virtualFile: VirtualFile.Folder): File?
+    suspend fun get(file: VirtualFile.File): VirtualFile.Thumbnail?
 }

@@ -1,7 +1,6 @@
-package com.dv.apps.komic.reader.feature.common
+package com.dv.apps.komic.reader.ui.thumbnail
 
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -16,25 +15,50 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.dv.apps.komic.reader.R
+import com.dv.apps.komic.reader.domain.filesystem.VirtualFile
 import com.dv.apps.komic.reader.ui.theme.KomicReaderTheme
-import java.io.File
 
 @Composable
-fun KomicPreview(
+fun Thumbnail(
     modifier: Modifier = Modifier,
-    title: String,
-    preview: File? = null
+    file: VirtualFile.File
 ) {
     OutlinedCard(modifier) {
         AsyncImage(
             modifier = Modifier.fillMaxWidth(),
-            model = preview,
+            model = R.drawable.ic_preview,
             contentDescription = "",
             contentScale = ContentScale.FillWidth
         )
         Text(
-            title,
-            Modifier.padding(8.dp).fillMaxWidth(),
+            file.name,
+            Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
+            style = MaterialTheme.typography.titleSmall,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+fun Thumbnail(
+    modifier: Modifier = Modifier,
+    file: VirtualFile.File.WithThumbnail
+) {
+    OutlinedCard(modifier) {
+        AsyncImage(
+            modifier = Modifier.fillMaxWidth(),
+            model = file.thumbnail.path,
+            contentDescription = "",
+            contentScale = ContentScale.FillWidth
+        )
+        Text(
+            file.name,
+            Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
             style = MaterialTheme.typography.titleSmall,
             textAlign = TextAlign.Center
         )
@@ -43,15 +67,19 @@ fun KomicPreview(
 
 @PreviewScreenSizes
 @Composable
-private fun KomicPreviewPreview() {
+private fun ThumbnailPreview() {
     KomicReaderTheme {
         LazyVerticalGrid(GridCells.Adaptive(180.dp)) {
             items(100) {
-                KomicPreview(
+                Thumbnail(
                     Modifier
                         .aspectRatio(9 / 16f)
                         .padding(8.dp),
-                    "Title number $it"
+                    VirtualFile.File.WithThumbnail(
+                        VirtualFile.File(
+                            "Herry Pouter"
+                        )
+                    )
                 )
             }
         }

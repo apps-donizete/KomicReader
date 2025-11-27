@@ -13,5 +13,5 @@ val roomDatabaseModule = module {
         ).fallbackToDestructiveMigration(true).build()
     }
 
-    single { get<KomicReaderDatabase>().fileTreeDAO }
+    single { get<KomicReaderDatabase>().thumbnailDAO }
 }
