@@ -48,4 +48,12 @@ class VirtualFileSystemImpl(
             }
         }
     }
+
+    override fun count(
+        virtualFile: VirtualFile
+    ): Int = when (virtualFile) {
+        is VirtualFile.File -> 1
+        is VirtualFile.File.WithThumbnail -> 1
+        is VirtualFile.Folder -> virtualFile.children.sumOf(::count)
+    }
 }

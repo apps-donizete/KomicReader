@@ -7,4 +7,8 @@ interface VirtualFileSystem {
         path: String,
         quality: Settings.Quality
     ): VirtualFile?
+
+    fun count(
+        virtualFile: VirtualFile
+    ): Int
 }
