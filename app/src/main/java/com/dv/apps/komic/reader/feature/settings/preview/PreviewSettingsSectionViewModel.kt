@@ -42,11 +42,15 @@ class PreviewSettingsSectionViewModel(
     fun handleIntent(intent: Intent) = viewModelScope.launch {
         when (intent) {
             is Intent.OnVerticalPreviewSpanSizeChanged -> {
-                settingsManager.setVerticalPreviewSpanSize(intent.size)
+                settingsManager.setVerticalPreviewSpanSize(
+                    intent.size.coerceAtLeast(0)
+                )
             }
 
             is Intent.OnHorizontalPreviewSpanSizeChanged -> {
-                settingsManager.setHorizontalPreviewSpanSize(intent.size)
+                settingsManager.setHorizontalPreviewSpanSize(
+                    intent.size.coerceAtLeast(0)
+                )
             }
 
             is Intent.OnQualityChanged -> {
