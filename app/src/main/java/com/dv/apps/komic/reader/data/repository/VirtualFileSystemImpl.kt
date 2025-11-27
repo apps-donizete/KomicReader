@@ -29,17 +29,31 @@ class VirtualFileSystemImpl(
             context,
             uri
         ) ?: return VirtualFile.Folder("Error", path, emptyList())
-        return buildTree(documentFile, quality)
+
+        val thumbnails = thumbnailManager.all().associateBy { it.owner }
+
+        return buildTree(
+            thumbnails,
+            documentFile,
+            quality
+        )
     }
 
     private suspend fun buildTree(
+        thumbnailsCache: Map<String, VirtualFile.Thumbnail>,
         documentFile: DocumentFile,
         quality: Settings.Quality
     ): VirtualFile = withContext(Dispatchers.IO) {
         if (documentFile.isDirectory) {
             val children = documentFile
                 .listFiles()
-                .map { async { buildTree(it, quality) } }
+                .map {
+                    async {
+                        buildTree(
+                            thumbnailsCache, it, quality
+                        )
+                    }
+                }
 
             VirtualFile.Folder(
                 documentFile.name.orEmpty(),
@@ -53,7 +67,11 @@ class VirtualFileSystemImpl(
                 documentFile.type.orEmpty()
             )
 
-            val thumbnail = thumbnail(file, quality) ?: return@withContext file
+            val thumbnail = getThumbnail(
+                thumbnailsCache,
+                file,
+                quality
+            ) ?: return@withContext file
 
             VirtualFile.File.WithThumbnail(file, thumbnail)
         }
@@ -64,11 +82,12 @@ class VirtualFileSystemImpl(
         return context.contentResolver.openInputStream(uri)
     }
 
-    override suspend fun thumbnail(
+    private suspend fun getThumbnail(
+        thumbnailsCache: Map<String, VirtualFile.Thumbnail>,
         file: VirtualFile.File,
         quality: Settings.Quality
     ): VirtualFile.Thumbnail? {
-        val cache = thumbnailManager.get(file)
+        val cache = thumbnailsCache[file.path]
 
         if (cache != null && cache.quality == quality.ordinal) return cache
 

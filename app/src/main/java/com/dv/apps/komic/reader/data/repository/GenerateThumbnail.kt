@@ -46,6 +46,7 @@ object GenerateThumbnail {
         }
 
         val thumbnail = VirtualFile.Thumbnail(
+            file.path,
             tmpFile.absolutePath,
             resized.width,
             resized.height,

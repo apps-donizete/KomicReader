@@ -29,6 +29,7 @@ sealed interface VirtualFile {
     }
 
     data class Thumbnail(
+        val owner: String = "",
         val path: String = "",
         val width: Int = 0,
         val height: Int = 0,

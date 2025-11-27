@@ -28,10 +28,21 @@ class ThumbnailManagerImpl(
         file: VirtualFile.File
     ) = thumbnailDao.get(file.path)?.run {
         VirtualFile.Thumbnail(
+            owner,
             path,
             width,
             height,
             quality
+        )
+    }
+
+    override suspend fun all() = thumbnailDao.all().map {
+        VirtualFile.Thumbnail(
+            it.owner,
+            it.path,
+            it.width,
+            it.height,
+            it.quality,
         )
     }
 }

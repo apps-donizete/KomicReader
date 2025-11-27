@@ -12,9 +12,4 @@ interface VirtualFileSystem {
     fun open(
         file: VirtualFile.File
     ): InputStream?
-
-    suspend fun thumbnail(
-        file: VirtualFile.File,
-        quality: Settings.Quality
-    ): VirtualFile.Thumbnail?
 }

@@ -6,4 +6,6 @@ interface ThumbnailManager {
     suspend fun add(file: VirtualFile.File, thumbnail: VirtualFile.Thumbnail)
 
     suspend fun get(file: VirtualFile.File): VirtualFile.Thumbnail?
+
+    suspend fun all(): List<VirtualFile.Thumbnail>
 }

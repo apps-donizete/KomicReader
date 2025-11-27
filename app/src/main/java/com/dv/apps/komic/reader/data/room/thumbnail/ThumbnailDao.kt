@@ -12,7 +12,7 @@ interface ThumbnailDao {
     suspend fun create(entity: ThumbnailEntity)
 
     @Query("SELECT * FROM thumbnail")
-    fun all(): Flow<List<ThumbnailEntity>>
+    suspend fun all(): List<ThumbnailEntity>
 
     @Query("SELECT * FROM thumbnail WHERE owner = :path")
     suspend fun get(path: String): ThumbnailEntity?
