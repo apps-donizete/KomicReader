@@ -4,9 +4,9 @@ import com.dv.apps.komic.reader.domain.model.Settings
 
 interface VirtualFileSystem {
     suspend fun buildTree(
-        path: String,
+        paths: List<String>,
         quality: Settings.Quality
-    ): VirtualFile?
+    ): VirtualFile
 
     fun count(
         virtualFile: VirtualFile

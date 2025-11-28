@@ -16,12 +16,19 @@ class VirtualFileSystemImpl(
     private val platformFileManager: PlatformFileManager
 ) : VirtualFileSystem {
     override suspend fun buildTree(
-        path: String,
+        paths: List<String>,
         quality: Settings.Quality
-    ): VirtualFile? {
-        val platformFile = platformFileManager.get(path) ?: return null
-        if (platformFile.type != PlatformFile.Type.FOLDER) return null
-        return buildTree(platformFile, quality)
+    ): VirtualFile = withContext(Dispatchers.IO) {
+        val folders = paths.mapNotNull(platformFileManager::get)
+        VirtualFile.Folder(
+            name = "/",
+            path = "/",
+            children = folders.map {
+                async {
+                    buildTree(it, quality)
+                }
+            }.awaitAll()
+        )
     }
 
     private suspend fun buildTree(

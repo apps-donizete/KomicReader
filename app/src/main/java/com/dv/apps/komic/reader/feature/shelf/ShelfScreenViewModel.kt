@@ -7,17 +7,13 @@ import com.dv.apps.komic.reader.domain.filesystem.VirtualFileSystem
 import com.dv.apps.komic.reader.domain.model.Settings
 import com.dv.apps.komic.reader.domain.repository.SettingsManager
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 data class State(
-    val trees: List<VirtualFile> = emptyList(),
+    val tree: VirtualFile = VirtualFile.Folder(),
     val settings: Settings = Settings(),
     val isLoading: Boolean = false
 )
@@ -31,10 +27,10 @@ class ShelfScreenViewModel(
     val state = settingsManager
         .getSettings()
         .map { settings ->
-            val trees = settings.selectedFolders.mapNotNull {
-                virtualFilesystem.buildTree(it, settings.quality)
-            }
-            State(trees, settings)
+            val tree = virtualFilesystem.buildTree(
+                settings.selectedFolders, settings.quality
+            )
+            State(tree, settings)
         }
         .flowOn(Dispatchers.Default)
         .stateIn(

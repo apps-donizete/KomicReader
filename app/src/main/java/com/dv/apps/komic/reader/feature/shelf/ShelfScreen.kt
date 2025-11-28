@@ -101,9 +101,7 @@ fun ShelfScreen(
             ShelfFilter()
         }
 
-        for (item in state.trees) {
-            ShelfPreviewTree(span, item)
-        }
+        ShelfPreviewTree(span, state.tree)
 
         item { Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars)) }
     }
@@ -152,54 +150,56 @@ private fun ShelfScreenPreview() {
     KomicReaderTheme {
         ShelfScreen(
             State(
-                trees = listOf(
-                    VirtualFile.Folder(
-                        "POKEMON",
-                        "",
-                        listOf(
-                            VirtualFile.File(
-                                "A"
-                            ),
-                            VirtualFile.File(
-                                "B"
-                            ),
-                            VirtualFile.File(
-                                "C"
-                            ),
-                        )
-                    ),
-                    VirtualFile.Folder(
-                        "DIGIMON",
-                        "",
-                        listOf(
-                            VirtualFile.File(
-                                "A"
-                            ),
-                            VirtualFile.File(
-                                "B"
-                            ),
-                        )
-                    ),
-                    VirtualFile.Folder(
-                        "CROSSOVER",
-                        "",
-                        listOf(
-                            VirtualFile.File(
-                                "A"
-                            ),
-                            VirtualFile.File(
-                                "B",
-                            ),
-                            VirtualFile.Folder(
-                                "CHAVEZ",
-                                "",
-                                listOf(
-                                    VirtualFile.File(
-                                        "A"
-                                    ),
-                                    VirtualFile.File(
-                                        "B"
-                                    ),
+                tree = VirtualFile.Folder(
+                    children = listOf(
+                        VirtualFile.Folder(
+                            "POKEMON",
+                            "",
+                            listOf(
+                                VirtualFile.File(
+                                    "A"
+                                ),
+                                VirtualFile.File(
+                                    "B"
+                                ),
+                                VirtualFile.File(
+                                    "C"
+                                ),
+                            )
+                        ),
+                        VirtualFile.Folder(
+                            "DIGIMON",
+                            "",
+                            listOf(
+                                VirtualFile.File(
+                                    "A"
+                                ),
+                                VirtualFile.File(
+                                    "B"
+                                ),
+                            )
+                        ),
+                        VirtualFile.Folder(
+                            "CROSSOVER",
+                            "",
+                            listOf(
+                                VirtualFile.File(
+                                    "A"
+                                ),
+                                VirtualFile.File(
+                                    "B",
+                                ),
+                                VirtualFile.Folder(
+                                    "CHAVEZ",
+                                    "",
+                                    listOf(
+                                        VirtualFile.File(
+                                            "A"
+                                        ),
+                                        VirtualFile.File(
+                                            "B"
+                                        ),
+                                    )
                                 )
                             )
                         )
