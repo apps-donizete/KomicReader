@@ -11,12 +11,6 @@ interface ThumbnailDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun create(entity: ThumbnailEntity)
 
-    @Query("SELECT * FROM thumbnail")
-    suspend fun all(): List<ThumbnailEntity>
-
-    @Query("SELECT * FROM thumbnail WHERE owner = :path")
-    suspend fun get(path: String): ThumbnailEntity?
-
     @Query("SELECT * FROM thumbnail WHERE id = :id")
-    suspend fun get(id: Int): ThumbnailEntity?
+    suspend fun getById(id: Int): ThumbnailEntity?
 }

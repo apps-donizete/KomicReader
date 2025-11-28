@@ -1,11 +1,12 @@
 package com.dv.apps.komic.reader.domain.repository
 
 import com.dv.apps.komic.reader.domain.filesystem.VirtualFile
+import com.dv.apps.komic.reader.domain.model.Settings
+import com.dv.apps.komic.reader.platform.PlatformFile
 
 interface ThumbnailManager {
-    suspend fun add(file: VirtualFile.File, thumbnail: VirtualFile.Thumbnail)
-
-    suspend fun get(file: VirtualFile.File): VirtualFile.Thumbnail?
-
-    suspend fun all(): List<VirtualFile.Thumbnail>
+    suspend fun get(
+        platformFile: PlatformFile,
+        quality: Settings.Quality
+    ): VirtualFile.Thumbnail?
 }

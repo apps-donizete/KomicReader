@@ -3,6 +3,7 @@ package com.dv.apps.komic.reader.data.repository
 import com.dv.apps.komic.reader.domain.filesystem.VirtualFile
 import com.dv.apps.komic.reader.domain.filesystem.VirtualFileSystem
 import com.dv.apps.komic.reader.domain.model.Settings
+import com.dv.apps.komic.reader.domain.repository.ThumbnailManager
 import com.dv.apps.komic.reader.platform.PlatformFile
 import com.dv.apps.komic.reader.platform.PlatformFileManager
 import kotlinx.coroutines.Dispatchers
@@ -11,6 +12,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
 class VirtualFileSystemImpl(
+    private val thumbnailManager: ThumbnailManager,
     private val platformFileManager: PlatformFileManager
 ) : VirtualFileSystem {
     override suspend fun buildTree(
@@ -19,25 +21,24 @@ class VirtualFileSystemImpl(
     ): VirtualFile? {
         val platformFile = platformFileManager.get(path) ?: return null
         if (platformFile.type != PlatformFile.Type.FOLDER) return null
-        return buildTree(platformFile)
+        return buildTree(platformFile, quality)
     }
 
     private suspend fun buildTree(
-        platformFile: PlatformFile
+        platformFile: PlatformFile,
+        quality: Settings.Quality
     ): VirtualFile = withContext(Dispatchers.IO) {
         when (platformFile.type) {
-            PlatformFile.Type.FILE -> VirtualFile.File(
-                platformFile.name,
-                platformFile.descriptor,
-                platformFile.mimeType
-            )
+            PlatformFile.Type.FILE -> {
+                buildFile(platformFile, quality)
+            }
 
             PlatformFile.Type.FOLDER -> {
                 val children = platformFileManager
                     .listFiles(platformFile)
                     .map {
                         async {
-                            buildTree(it)
+                            buildTree(it, quality)
                         }
                     }
                 VirtualFile.Folder(
@@ -47,6 +48,23 @@ class VirtualFileSystemImpl(
                 )
             }
         }
+    }
+
+    private suspend fun buildFile(
+        platformFile: PlatformFile,
+        quality: Settings.Quality
+    ): VirtualFile {
+        val virtualFile = VirtualFile.File(
+            platformFile.name,
+            platformFile.descriptor,
+            platformFile.mimeType
+        )
+        val thumbnail = thumbnailManager.get(platformFile, quality) ?: return virtualFile
+
+        return VirtualFile.File.WithThumbnail(
+            virtualFile,
+            thumbnail
+        )
     }
 
     override fun count(

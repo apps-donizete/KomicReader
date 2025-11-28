@@ -11,7 +11,7 @@ sealed interface VirtualFile {
     ) : VirtualFile
 
     data class File(
-        override val name: String,
+        override val name: String = "",
         override val path: String = "",
         val type: String = ""
     ) : VirtualFile {
@@ -27,7 +27,7 @@ sealed interface VirtualFile {
     }
 
     data class Thumbnail(
-        val owner: String = "",
+        val id: Int = 0,
         val path: String = "",
         val width: Int = 0,
         val height: Int = 0,
