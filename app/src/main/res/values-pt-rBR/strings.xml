@@ -11,4 +11,11 @@
     <string name="settings_section_preview_quality">Qualidade</string>
 
     <string name="shelf_screen_title">Seus livros</string>
+    <string name="shelf_screen_sub_title">Todos os seus livros em um só lugar</string>
+
+    <string name="home_screen_title">Início</string>
+    <string name="home_screen_sub_title">Sua coleção de leitura</string>
+    <string name="home_screen_filter_option_by_read">Último</string>
+    <string name="home_screen_filter_option_by_title">Título</string>
+    <string name="home_screen_filter_option_by_progress">Progresso</string>
 </resources>
