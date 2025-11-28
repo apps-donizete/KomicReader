@@ -21,14 +21,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowSizeClass
-import com.dv.apps.komic.reader.R
 import com.dv.apps.komic.reader.domain.filesystem.VirtualFile
 import com.dv.apps.komic.reader.domain.model.Settings
+import com.dv.apps.komic.reader.feature.shelf.components.ShelfFilter
+import com.dv.apps.komic.reader.feature.shelf.components.ShelfHeader
 import com.dv.apps.komic.reader.ui.theme.KomicReaderTheme
 import com.dv.apps.komic.reader.ui.thumbnail.Thumbnail
 import org.koin.androidx.compose.koinViewModel
@@ -94,10 +94,11 @@ fun ShelfScreen(
         item { Spacer(Modifier.windowInsetsPadding(WindowInsets.statusBars)) }
 
         item(span = { span }) {
-            Text(
-                stringResource(R.string.shelf_screen_title),
-                style = MaterialTheme.typography.titleLarge
-            )
+            ShelfHeader()
+        }
+
+        item(span = { span }) {
+            ShelfFilter()
         }
 
         for (item in state.trees) {

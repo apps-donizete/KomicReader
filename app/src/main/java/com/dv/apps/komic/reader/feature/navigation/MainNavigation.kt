@@ -9,16 +9,16 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.material3.adaptive.navigationsuite.rememberNavigationSuiteScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.dv.apps.komic.reader.R
+import com.dv.apps.komic.reader.feature.home.HomeScreen
 import com.dv.apps.komic.reader.feature.settings.SettingsScreen
 import com.dv.apps.komic.reader.feature.shelf.ShelfScreen
 import com.dv.apps.komic.reader.ui.theme.KomicReaderTheme
@@ -73,7 +73,7 @@ fun MainNavigator(
         entryProvider = entryProvider {
             entry<Destination> {
                 when (it) {
-                    Destination.HOME -> Text("Home")
+                    Destination.HOME -> HomeScreen()
                     Destination.SHELF -> ShelfScreen()
                     Destination.SETTINGS -> SettingsScreen()
                 }
@@ -92,7 +92,7 @@ enum class Destination(
     SETTINGS(R.string.menu_settings, R.drawable.ic_settings, R.drawable.ic_settings_filled)
 }
 
-@PreviewScreenSizes
+@Preview(showSystemUi = true)
 @Composable
 private fun FolderScreenPreview() {
     KomicReaderTheme {
