@@ -2,11 +2,9 @@ package com.dv.apps.komic.reader.feature.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
@@ -24,7 +22,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         modifier = Modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        item { Spacer(Modifier.windowInsetsPadding(WindowInsets.statusBars)) }
+        item { Spacer(Modifier.statusBarsPadding()) }
 
         item {
             HomeHeader()
@@ -34,7 +32,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             NowReadingSection()
         }
 
-        item { Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars)) }
+        item { Spacer(Modifier.navigationBarsPadding()) }
     }
 }
 

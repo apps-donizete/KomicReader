@@ -3,12 +3,10 @@ package com.dv.apps.komic.reader.feature.shelf
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
@@ -91,7 +89,7 @@ fun ShelfScreen(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        item { Spacer(Modifier.windowInsetsPadding(WindowInsets.statusBars)) }
+        item { Spacer(Modifier.statusBarsPadding()) }
 
         item(span = { span }) {
             ShelfHeader()
@@ -103,7 +101,7 @@ fun ShelfScreen(
 
         ShelfPreviewTree(span, state.tree)
 
-        item { Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars)) }
+        item { Spacer(Modifier.navigationBarsPadding()) }
     }
 }
 
