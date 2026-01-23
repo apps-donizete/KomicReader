@@ -10,7 +10,6 @@ import com.dv.apps.komic.reader.domain.repository.CacheManager
 import com.dv.apps.komic.reader.domain.repository.FileReader
 import com.dv.apps.komic.reader.domain.repository.SettingsManager
 import com.dv.apps.komic.reader.domain.repository.ThumbnailManager
-import com.dv.apps.komic.reader.platform.PlatformFileIterator
 import com.dv.apps.komic.reader.platform.PlatformFileManager
 import com.dv.apps.komic.reader.platform.PlatformFileManagerImpl
 import org.koin.core.module.dsl.singleOf
@@ -19,8 +18,6 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     singleOf(::PlatformFileManagerImpl) bind PlatformFileManager::class
-    singleOf(PlatformFileIterator::Factory)
-
     singleOf(::SettingsManagerImpl) bind SettingsManager::class
     singleOf(::VirtualFileTreeManagerImpl) bind VirtualFileTreeManager::class
     singleOf(::CacheManagerImpl) bind CacheManager::class
