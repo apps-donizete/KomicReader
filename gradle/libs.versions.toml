@@ -73,10 +73,6 @@ room = [
     "androidx-room-runtime",
     "androidx-room-ktx"
 ]
-datastore = [
-    "datastore",
-    "protobuf"
-]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

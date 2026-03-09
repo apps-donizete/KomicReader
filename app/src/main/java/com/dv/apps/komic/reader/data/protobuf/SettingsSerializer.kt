@@ -7,6 +7,7 @@ import androidx.datastore.dataStore
 import com.google.protobuf.InvalidProtocolBufferException
 import java.io.InputStream
 import java.io.OutputStream
+import com.dv.apps.komic.reader.protobuf.Settings
 
 internal val Context.settingsDatastore by dataStore(
     fileName = "settings.pb",
