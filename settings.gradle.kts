@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Komic Reader"
 include(":app")
- 
+include(":protobuf")

@@ -1,6 +1,6 @@
 [versions]
 agp = "9.1.0"
-compose = "2.3.10"
+kotlin = "2.3.10"
 ksp = "2.3.4"
 coreKtx = "1.17.0"
 junit = "4.13.2"
@@ -80,6 +80,7 @@ datastore = [
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "compose" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
