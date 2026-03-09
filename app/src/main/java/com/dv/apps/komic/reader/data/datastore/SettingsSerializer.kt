@@ -1,4 +1,4 @@
-package com.dv.apps.komic.reader.data.protobuf
+package com.dv.apps.komic.reader.data.datastore
 
 import android.content.Context
 import androidx.datastore.core.CorruptionException

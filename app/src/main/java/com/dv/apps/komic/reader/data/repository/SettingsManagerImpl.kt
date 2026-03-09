@@ -3,7 +3,7 @@ package com.dv.apps.komic.reader.data.repository
 import android.content.Context
 import android.content.Intent
 import androidx.core.net.toUri
-import com.dv.apps.komic.reader.data.protobuf.settingsDatastore
+import com.dv.apps.komic.reader.data.datastore.settingsDatastore
 import com.dv.apps.komic.reader.domain.model.Settings
 import com.dv.apps.komic.reader.domain.repository.SettingsManager
 import com.dv.apps.komic.reader.protobuf.copy
