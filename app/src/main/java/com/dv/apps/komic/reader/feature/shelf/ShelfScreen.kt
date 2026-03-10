@@ -25,8 +25,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowSizeClass
 import com.dv.apps.komic.reader.domain.filesystem.tree.VirtualFileTree
 import com.dv.apps.komic.reader.domain.model.Settings
-import com.dv.apps.komic.reader.feature.shelf.components.ShelfFilter
-import com.dv.apps.komic.reader.feature.shelf.components.ShelfHeader
 import com.dv.apps.komic.reader.ui.theme.KomicReaderTheme
 import com.dv.apps.komic.reader.ui.thumbnail.Thumbnail
 import org.koin.androidx.compose.koinViewModel
@@ -90,14 +88,6 @@ fun ShelfScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item { Spacer(Modifier.statusBarsPadding()) }
-
-        item(span = { span }) {
-            ShelfHeader()
-        }
-
-        item(span = { span }) {
-            ShelfFilter()
-        }
 
         ShelfPreviewTree(span, state.tree)
 
