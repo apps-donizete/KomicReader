@@ -26,11 +26,10 @@ class ThumbnailManagerImpl(
     private val context: Context,
     private val fileReader: FileReader
 ) : ThumbnailManager {
+    private val thumbnailDir = context.getExternalFilesDir(THUMBNAIL)
 
     override suspend fun clear() {
-        context.getExternalFilesDir(THUMBNAIL)?.apply {
-            deleteRecursively()
-        }
+        thumbnailDir?.deleteRecursively()
     }
 
     override suspend fun generate(
@@ -38,7 +37,7 @@ class ThumbnailManagerImpl(
         quality: Settings.Quality
     ) {
         val id = platformFile.descriptor.hashCode()
-        val thumbnailFile = File(context.getExternalFilesDir(THUMBNAIL), "$id")
+        val thumbnailFile = File(thumbnailDir, "$id")
 
         fileReader.open(platformFile)?.use { fileReaderState ->
             if (!fileReaderState.hasNext()) return
@@ -67,10 +66,9 @@ class ThumbnailManagerImpl(
         platformFile: PlatformFile
     ): VirtualFileTree.Thumbnail? {
         val id = platformFile.descriptor.hashCode()
+        val thumbnailFile = File(thumbnailDir, "$id")
 
-        val thumbnailFile = File(context.getExternalFilesDir(THUMBNAIL), "$id").takeIf {
-            it.exists() && it.length() > 0
-        } ?: return null
+        if (thumbnailFile.exists().not()) return null
 
         return VirtualFileTree.Thumbnail(
             thumbnailFile.absolutePath
