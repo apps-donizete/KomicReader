@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.dv.apps.komic.reader.R
-import com.dv.apps.komic.reader.domain.filesystem.tree.VirtualFileTree
+import com.dv.apps.komic.reader.filesystem.tree.VirtualFileTree
 import com.dv.apps.komic.reader.ui.theme.KomicReaderTheme
 
 @Composable

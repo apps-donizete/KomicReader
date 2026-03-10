@@ -1,4 +1,4 @@
-package com.dv.apps.komic.reader.platform
+package com.dv.apps.komic.reader.filesystem.platform
 
 import java.io.InputStream
 

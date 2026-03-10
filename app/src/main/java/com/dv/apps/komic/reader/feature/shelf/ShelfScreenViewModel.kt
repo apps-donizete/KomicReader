@@ -2,8 +2,8 @@ package com.dv.apps.komic.reader.feature.shelf
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dv.apps.komic.reader.domain.filesystem.tree.VirtualFileTree
-import com.dv.apps.komic.reader.domain.filesystem.tree.VirtualFileTreeManager
+import com.dv.apps.komic.reader.filesystem.tree.VirtualFileTree
+import com.dv.apps.komic.reader.filesystem.tree.VirtualFileTreeManager
 import com.dv.apps.komic.reader.domain.model.Settings
 import com.dv.apps.komic.reader.domain.repository.SettingsManager
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +28,7 @@ class ShelfScreenViewModel(
         .getSettings()
         .map { settings ->
             val tree = virtualFilesystem.buildTree(
-                settings.selectedFolders, settings.quality
+                settings.selectedFolders
             )
             State(tree, settings)
         }

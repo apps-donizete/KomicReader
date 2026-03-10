@@ -1,110 +1,79 @@
 package com.dv.apps.komic.reader.data.repository
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.ThumbnailUtils
-import com.dv.apps.komic.reader.data.room.thumbnail.ThumbnailDao
-import com.dv.apps.komic.reader.data.room.thumbnail.ThumbnailEntity
-import com.dv.apps.komic.reader.domain.filesystem.tree.VirtualFileTree
 import com.dv.apps.komic.reader.domain.model.Settings
-import com.dv.apps.komic.reader.domain.repository.CacheManager
 import com.dv.apps.komic.reader.domain.repository.FileReader
 import com.dv.apps.komic.reader.domain.repository.ThumbnailManager
-import com.dv.apps.komic.reader.platform.PlatformFile
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.dv.apps.komic.reader.filesystem.platform.PlatformFile
+import com.dv.apps.komic.reader.filesystem.tree.VirtualFileTree
 import java.io.File
 
+private const val THUMBNAIL = "thumbnail"
+
+private fun getFactorForQuality(
+    quality: Settings.Quality
+) = when (quality) {
+    Settings.Quality.HD -> 16
+    Settings.Quality.FULL_HD -> 8
+    Settings.Quality.TWO_K -> 4
+    Settings.Quality.FOUR_K -> 1
+}
+
 class ThumbnailManagerImpl(
-    private val fileReader: FileReader,
-    private val cacheManager: CacheManager,
-    private val thumbnailDao: ThumbnailDao
+    private val context: Context,
+    private val fileReader: FileReader
 ) : ThumbnailManager {
-    private fun getFactorForQuality(
-        quality: Settings.Quality
-    ) = when (quality) {
-        Settings.Quality.HD -> 16
-        Settings.Quality.FULL_HD -> 8
-        Settings.Quality.TWO_K -> 4
-        Settings.Quality.FOUR_K -> 1
+
+    override suspend fun clear() {
+        context.getExternalFilesDir(THUMBNAIL)?.apply {
+            deleteRecursively()
+        }
     }
 
-    private suspend fun generate(
-        id: Int,
+    override suspend fun generate(
         platformFile: PlatformFile,
         quality: Settings.Quality
-    ): VirtualFileTree.Thumbnail? = withContext(Dispatchers.IO) {
-        val tmpFile = File.createTempFile("tmp_thumbnail", "")
+    ) {
+        val id = platformFile.descriptor.hashCode()
+        val thumbnailFile = File(context.getExternalFilesDir(THUMBNAIL), "$id")
 
         fileReader.open(platformFile)?.use { fileReaderState ->
-            if (!fileReaderState.hasNext()) return@withContext null
-            tmpFile.outputStream().use { outputStream ->
+            if (!fileReaderState.hasNext()) return
+            thumbnailFile.outputStream().use { outputStream ->
                 fileReaderState.next().readTo(outputStream)
             }
-        } ?: return@withContext null
+        } ?: return
 
         val factor = getFactorForQuality(quality)
-        val decode = BitmapFactory.decodeFile(tmpFile.absolutePath)
+        val decode = BitmapFactory.decodeFile(thumbnailFile.absolutePath)
         val resized = ThumbnailUtils.extractThumbnail(
             decode,
             decode.width / factor,
             decode.height / factor
         )
 
-        tmpFile.outputStream().use {
+        thumbnailFile.outputStream().use {
             resized.compress(Bitmap.CompressFormat.JPEG, 100, it)
         }
 
-        val thumbnail = VirtualFileTree.Thumbnail(
-            id,
-            tmpFile.absolutePath,
-            resized.width,
-            resized.height,
-            quality.ordinal
-        )
-
         decode.recycle()
         resized.recycle()
-
-        thumbnail
     }
 
     override suspend fun get(
-        platformFile: PlatformFile,
-        quality: Settings.Quality
+        platformFile: PlatformFile
     ): VirtualFileTree.Thumbnail? {
-        val cacheId = platformFile.descriptor.hashCode()
-        val cache = thumbnailDao.getById(cacheId)
-        if (cache != null && cache.quality == quality.ordinal) return cache.toDomain()
+        val id = platformFile.descriptor.hashCode()
 
-        // no valid thumbnail in cache, generate new one
-        val temporaryThumbnail = generate(
-            cacheId,
-            platformFile,
-            quality
-        ) ?: return null
+        val thumbnailFile = File(context.getExternalFilesDir(THUMBNAIL), "$id").takeIf {
+            it.exists() && it.length() > 0
+        } ?: return null
 
-        val cachePath = cacheManager.add(cacheId, temporaryThumbnail.path) ?: return null
-        val finalThumbnail = temporaryThumbnail.copy(path = cachePath)
-
-        thumbnailDao.create(finalThumbnail.toEntity())
-
-        return finalThumbnail
+        return VirtualFileTree.Thumbnail(
+            thumbnailFile.absolutePath
+        )
     }
-
-    private fun VirtualFileTree.Thumbnail.toEntity() = ThumbnailEntity(
-        id,
-        path,
-        width,
-        height,
-        quality
-    )
-
-    private fun ThumbnailEntity.toDomain() = VirtualFileTree.Thumbnail(
-        id,
-        path,
-        width,
-        height,
-        quality
-    )
 }

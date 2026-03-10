@@ -1,7 +1,7 @@
 package com.dv.apps.komic.reader.domain.repository
 
-import com.dv.apps.komic.reader.domain.filesystem.tree.VirtualFileTree
-import com.dv.apps.komic.reader.platform.PlatformFile
+import com.dv.apps.komic.reader.filesystem.tree.VirtualFileTree
+import com.dv.apps.komic.reader.filesystem.platform.PlatformFile
 import java.io.OutputStream
 
 interface FileReader {

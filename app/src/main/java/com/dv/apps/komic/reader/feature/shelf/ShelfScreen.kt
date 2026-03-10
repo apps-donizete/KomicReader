@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowSizeClass
-import com.dv.apps.komic.reader.domain.filesystem.tree.VirtualFileTree
+import com.dv.apps.komic.reader.filesystem.tree.VirtualFileTree
 import com.dv.apps.komic.reader.domain.model.Settings
 import com.dv.apps.komic.reader.ui.theme.KomicReaderTheme
 import com.dv.apps.komic.reader.ui.thumbnail.Thumbnail

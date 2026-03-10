@@ -1,6 +1,6 @@
-package com.dv.apps.komic.reader.domain.filesystem.tree
+package com.dv.apps.komic.reader.filesystem.tree
 
-import com.dv.apps.komic.reader.platform.PlatformFile
+import com.dv.apps.komic.reader.filesystem.platform.PlatformFile
 
 sealed interface VirtualFileTree {
     val name: String
@@ -35,11 +35,8 @@ sealed interface VirtualFileTree {
         }
     }
 
-    data class Thumbnail(
-        val id: Int = 0,
-        val path: String = "",
-        val width: Int = 0,
-        val height: Int = 0,
-        val quality: Int = 0
+    @JvmInline
+    value class Thumbnail(
+        val path: String = ""
     )
 }

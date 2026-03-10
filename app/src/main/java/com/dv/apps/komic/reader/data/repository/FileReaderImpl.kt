@@ -1,9 +1,9 @@
 package com.dv.apps.komic.reader.data.repository
 
-import com.dv.apps.komic.reader.domain.filesystem.tree.VirtualFileTree
+import com.dv.apps.komic.reader.filesystem.tree.VirtualFileTree
 import com.dv.apps.komic.reader.domain.repository.FileReader
-import com.dv.apps.komic.reader.platform.PlatformFile
-import com.dv.apps.komic.reader.platform.PlatformFileManager
+import com.dv.apps.komic.reader.filesystem.platform.PlatformFile
+import com.dv.apps.komic.reader.filesystem.platform.PlatformFileManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream
