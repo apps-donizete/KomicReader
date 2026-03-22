@@ -1,9 +1,9 @@
 package com.dv.apps.komic.reader.di
 
 import com.dv.apps.komic.reader.domain.usecase.RefreshThumbnailUseCase
-import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
+import org.koin.plugin.module.dsl.factory
 
 val useCaseModule = module {
-    factoryOf(::RefreshThumbnailUseCase)
+    factory<RefreshThumbnailUseCase>()
 }

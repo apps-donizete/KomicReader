@@ -11,6 +11,7 @@ activityCompose = "1.13.0"
 composeBom = "2026.03.00"
 documentfile = "1.1.0"
 koinBom = "4.2.0"
+koinPlugin = "0.4.1"
 navigation3 = "1.0.1"
 room = "2.8.4"
 datastore = "1.2.1"
@@ -79,4 +80,5 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+koin-compiler = { id = "io.insert-koin.compiler.plugin", version.ref = "koinPlugin" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
